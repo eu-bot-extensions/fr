@@ -533,10 +533,10 @@ namespace eurate {
     }
 
     /**
-     * Stop all motors
+     * Arrête tous les moteurs
     */
     //% weight=100
-    //% blockId=motor_motorStopAll block="Motor Stop All"
+    //% blockId=motor_motorStopAll block="Arret Total"
     export function motorStopAll(): void {
         for (let idx = 1; idx <= 4; idx++) {
             motorStop(idx);
