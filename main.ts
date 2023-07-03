@@ -314,7 +314,7 @@ namespace eurate {
      * Execute a 42BYGH1861A-C step motor(Degree).
      * M1_M2/M3_M4.
     */
-    //% weight=80
+    //% weight=10
     //% blockId=motor_stepperDegree_42 block="Stepper 42|%index|dir|%direction|degree|%degree"
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -345,7 +345,7 @@ namespace eurate {
      * Execute a 42BYGH1861A-C step motor(Turn).
      * M1_M2/M3_M4.
     */
-    //% weight=70
+    //% weight=10
     //% blockId=motor_stepperTurn_42 block="Stepper 42|%index|dir|%direction|turn|%turn"
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -361,7 +361,7 @@ namespace eurate {
      * Execute a 28BYJ-48 step motor(Degree).
      * M1_M2/M3_M4.
     */
-    //% weight=60
+    //% weight=10
     //% blockId=motor_stepperDegree_28 block="Stepper 28|%index|dir|%direction|degree|%degree"
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -392,7 +392,7 @@ namespace eurate {
      * Execute a 28BYJ-48 step motor(Turn).
      * M1_M2/M3_M4.
     */
-    //% weight=50
+    //% weight=10
     //% blockId=motor_stepperTurn_28 block="Stepper 28|%index|dir|%direction|turn|%turn"
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -407,7 +407,7 @@ namespace eurate {
     /**
      * Two parallel stepper motors are executed simultaneously(DegreeDual).
     */
-    //% weight=40
+    //% weight=10
     //% blockId=motor_stepperDegreeDual_42 block="Dual Stepper %stepper|M1_M2 dir %direction1|degree %degree1|M3_M4 dir %direction2|degree %degree2"
     //% stepper.fieldEditor="gridpicker" stepper.fieldOptions.columns=2
     //% direction1.fieldEditor="gridpicker" direction1.fieldOptions.columns=2
@@ -499,7 +499,7 @@ namespace eurate {
     /**
      * Two parallel stepper motors are executed simultaneously(Turn).
     */
-    //% weight=30
+    //% weight=10
     //% blockId=motor_stepperTurnDual_42 block="Dual Stepper %stepper|M1_M2 dir %direction1|trun %trun1|M3_M4 dir %direction2|trun %trun2"
     //% stepper.fieldEditor="gridpicker" stepper.fieldOptions.columns=2
     //% direction1.fieldEditor="gridpicker" direction1.fieldOptions.columns=2
@@ -673,7 +673,7 @@ namespace eurate {
     * @param pin the pin for the sensor
     */
     //% inlineInputMode=external
-    //% weight=95
+    //% weight=10
     //% blockId=ir_sensor_dvalue block="IR Sensor Digital Value |pin %pin"
     export function IrSensorDigital(pin: DigitalPin): number {
         let value = pins.digitalReadPin(pin)
@@ -931,7 +931,7 @@ namespace eurate {
     * @param ms le nombre de milisecondes à attendre après le démarage des moteurs
     */
     //% inlineInputMode=external
-    //% weight=70
+    //% weight=60
     //% blockId= line_follower
     //% block="Suivre ligne avec deux capteurs ir|capteur ir gauche  %pingauche|capteur ir droit %pindroit|vitesse  %vit|temps en mS de déplacement  %ms"
     export function LineFollower(pinleft: DigitalPin, pinright: DigitalPin, speed: number, ms:number): void {
@@ -961,17 +961,17 @@ namespace eurate {
     }
 
     /**
-    * Follows a line based on the results of three ir sensors
-    * @param pinleft the pin for the left sensor
-    * @param pinright the pin for the right sensor
-    * @param pincenter the pin for the center sensor
-    * @param speed the speed for the motors
-    * @param ms the number of milliseconds to wait after starting the motors
+    * Suit une ligne suivant les résultats des 3 capteurs ir
+    * @param pinleft pin du capteur gauche
+    * @param pinright pin du capteur droit
+    * @param pincenter pin du capteur central
+    * @param vit vitesse des moteurs
+    * @param ms temps en milisecondes à attendre après allumage des moteurs
     */
     //% inlineInputMode=external
-    //% weight=70
+    //% weight=60
     //% blockId= line_follower_three_s
-    //% block="Line follower with three ir sensors|left ir sensor  %pinleft|right ir sensor %pinright|center ir sensor %pincenter|speed  %speed|value of mS to move motors  %ms"
+    //% block="Suivre ligne en utilisant les 3 capteurs ir|capteur ir gauche  %pinleft|capteur ir droit %pinright|capteur ir central %pincenter|vitesse  %vit|temps de déplacement  %ms"
     export function LineFollowerThreeSensors(pinleft: DigitalPin, pinright: DigitalPin, pincenter: DigitalPin, speed: number, ms: number): void {
 
         let leftV = eurate.IrSensor(pinleft);
