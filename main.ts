@@ -258,12 +258,12 @@ namespace eurate {
 
 
     /**
-     * Steering gear control function.
+     * Contrôle de position du moteur.
      * S1~S8.
      * 0°~180°.
     */
     //% blockId=motor_servo block="Servo|%index|degree|%degree"
-    //% weight=100
+    //% weight=70
     //% degree.min=0 degree.max=180
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=4
     export function servo(index: Servos, degree: number): void {
@@ -277,12 +277,12 @@ namespace eurate {
     }
 
     /**
-     * Execute a motor
+     * Contrôle un moteur
      * M1~M4.
-     * speed(0~255).
+     * Vitesse(0~255).
     */
     //% weight=90
-    //% blockId=motor_MotorRun block="Motor|%index|dir|%Dir|speed|%speed"
+    //% blockId=motor_MotorRun block="Contrôler moteur|%index|dir|%Dir|vitesse|%vit"
     //% speed.min=0 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -522,10 +522,10 @@ namespace eurate {
     }
 
     /**
-     * Stop the dc motor.
+     * Arrête le moteur.
     */
-    //% weight=20
-    //% blockId=motor_motorStop block="Motor stop|%index"
+    //% weight=90
+    //% blockId=motor_motorStop block="Arrêter moteur|%index"
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function motorStop(index: Motors) {
         setPwm((4 - index) * 2, 0, 0);
@@ -545,11 +545,11 @@ namespace eurate {
 
 
     /**
-    * Start all motors
+    * Démarre tous les moteurs
     * MotorRun(index: Motors, direction: Dir, speed: number):
     */
-    //% weight=10
-    //% blockId=motor_motorsStart block="Motors Start All|%Dir|%speed"
+    //% weight=100
+    //% blockId=motor_motorsStart block="Démarrer tous les moteurs|%Dir|%Vit"
     export function MotorsStart(direction: Dir, speed: number): void {
         for (let idx = 1; idx <= 4; idx++) {
             MotorRun(idx, direction, speed);
@@ -557,11 +557,11 @@ namespace eurate {
     }
 
     /**
-    * Rotate Right
+    * Rotation droite
     * MotorRun(index: Motors, direction: Dir, speed: number):
     */
-    //% weight=100
-    //% blockId=motor_RobotRotateRight block="Robot Rotate Right|%speed"
+    //% weight=80
+    //% blockId=motor_RobotRotateRight block="Rotation droite|%vit"
     export function RotateRight(speed: number): void {
         motorStopAll();
         MotorRun(1, -1, speed); //Right Back
@@ -572,11 +572,11 @@ namespace eurate {
     }
 
     /**
-    * Rotate Left
+    * Rotation gauche
     * MotorRun(index: Motors, direction: Dir, speed: number):
     */
-    //% weight=100
-    //% blockId=motor_RobotRotateLeft block="Robot Rotate Left|%speed"
+    //% weight=80
+    //% blockId=motor_RobotRotateLeft block="Rotation gauche|%vit"
     export function RotateLeft(speed: number): void {
         motorStopAll();
         MotorRun(1, 1, speed); //Right Back
@@ -614,13 +614,13 @@ namespace eurate {
     }
 
     /**
-    * Move the robot in a specified direction on a straigh line for a certain duration (in microseconds) with a defined speed
-    * @param speed speed
-    * @param direction direction 
-    * @param duration duration in microseconds
+    * Déplace le robot dans une certaine direction pendant un temps précis (en microsecondes) avec une vitesse définie
+    * @param Vitesse vit
+    * @param Direction direction 
+    * @param Durée durée en microsecondes
     */
     //% weight=90
-    //% blockId=motor_RobotMove block="Robot Move |speed (0-255) %speed|direction %Dir|duration ms %duration"
+    //% blockId=motor_RobotMove block="Déplacer robot |Vitesse (0-255) %vit|Direction %Dir|Durée ms %durée"
     export function Move(speed: number, direction: TwoDDir, duration: number, maxVelocity = 255, minVelocity = 1): void {
         motorStopAll();
         if (speed < minVelocity) { speed = minVelocity; } else if (speed > maxVelocity) { speed = maxVelocity; } //check boundries
@@ -640,12 +640,12 @@ namespace eurate {
     }
 
     /**
-    * Return the value of distance in cm
+    * Renvoie la valeur de distance en cm
     * @param trigpin tigger pin
     * @param echopin echo pin
     */
     //% inlineInputMode=external
-    //% weight=100
+    //% weight=70
     //% blockId=us_sensor block="US Sensor |ping trig %trigpin|echo %echopin"
     export function UsSensor(trigpin: DigitalPin, echopin: DigitalPin): number {
         pins.digitalWritePin(trigpin, 0)
@@ -657,11 +657,11 @@ namespace eurate {
     }
 
     /**
-    * Return true if the sensor detects something
-    * @param pin the pin for the sensor
+    * Renvoie True(vrai) si le capteur detecte quelquechose.
+    * @param pin le pin du capteur
     */
     //% inlineInputMode=external
-    //% weight=100
+    //% weight=70
     //% blockId=ir_sensor_boolean block="IR Sensor |pin %pin"
     export function IrSensor(pin: DigitalPin) : boolean {
        let value = pins.digitalReadPin(pin)
@@ -737,20 +737,20 @@ namespace eurate {
     }
 
     /**
-   * The robot moves forward until it encounters an wall in front and then turns in the direction with the most free space available 
-   * @param trigpin the trig pin for the us sensor
-   * @param echopin the echo pin for the us sensor
-   * @param angle the range in degrees for the servo rotation to scan the are in front of the robot
-   * @param speed the speed of the motors
-   * @param distance the threshold distance with which the robot is meant to turn
-   * @param servopin the pin of the servomotor
-   * @param seconds the second for which the robot must turn
-   * @param rangeLA the range of rotation of the servo motor when action "look around" is performed
+   * Le robot avance jusqu'à rencontrer un mur puis tourne dans la direction avec le plus de d'espace disponible 
+   * @param trigpin le trig pin du capteur us
+   * @param echopin l'echo pin du capteur us 
+   * @param angle balayage d'angle en degré de rotation du servo pour scanner la zone en face du robot
+   * @param vit la vitesse des moteurs
+   * @param distance sueil de distance à laquelle le robot doit tourner
+   * @param servopin le pin du servomoteur
+   * @param seconds temps en secondes que le robot prend à tourner
+   * @param rangeLA l'angle de rotation du servomoteur quand l'action "regarder autour" est effcetuée
    */
     //% inlineInputMode=external
-    //% weight=100
+    //% weight=60
     //% blockId= labyrinth_navigator_us
-    //% block="Labyrinth navigator with US sensor|trigpin US %trigpin|echopin US %echopin|angle range front US %angle|motors speed  %speed|threshold in cm from US  %distance|pin servo %servopin|seconds to turn %seconds|degree range to look around %rangeLA"
+    //% block="Navigateur labyrinthe avec capteurs US |trigpin US %trigpin|echopin US %echopin|angle balayé US %angle|vitesse moteurs  %speed|seuil en cm depuis l'US  %distance|pin servo %servopin|secondes pour tourner %secondes|angle de balayage pour regarder autour %rangeLA"
     export function LavNabUS(trigpin: DigitalPin, echopin: DigitalPin, angle: number, speed: number, distance: number, servopin: Servos, seconds: number, rangeLA:number) : void {
         
         //motorStopAll();
@@ -906,15 +906,15 @@ namespace eurate {
     }
 
     /**
-    * Turn for a certainamount of seconds in a specified direction
-    * @param speed the speed of the motors
-    * @param seconds the specified time in seconds to do the action
-    * @param direction the direction
+    * Tourne pendant un certain temps dans la direction choisie
+    * @param vitesse la vitesse des moteurs
+    * @param seconds le temps spécifié en secondes pour effectuer l'action
+    * @param direction la direction
     */
     //% inlineInputMode=external
     //% weight=90
     //% blockId= turn_robot
-    //% block="Turn robot|motors speed  %speed|seconds %seconds|direction %direction"
+    //% block="Tourner robot|vitesse moteurs %vitesse|secondes %secondes|direction %direction"
     export function Turn(speed: number, seconds: number, direction: DirRot): void {
         if (direction == DirRot.Right) {
             TurnRightRobotForSeconds(speed, seconds)
@@ -924,16 +924,16 @@ namespace eurate {
     }
 
     /**
-    * Follows a line based on the results of the two ir sensors
-    * @param pinleft the pin for the left sensor
-    * @param pinright the pin for the right sensor
-    * @param speed the speed for the motors
-    * @param ms the number of milliseconds to wait after starting the motors
+    * Suit une ligne en fonction des résultats des capteurs
+    * @param pinleft le pin du capteur de gauche
+    * @param pinright le pin du capteur de droite
+    * @param vit la vitesse des moteurs
+    * @param ms le nombre de milisecondes à attendre après le démarage des moteurs
     */
     //% inlineInputMode=external
-    //% weight=100
+    //% weight=70
     //% blockId= line_follower
-    //% block="Line follower with two ir sensors|left ir sensor  %pinleft|right ir sensor %pinright|speed  %speed|value of mS to move motors  %ms"
+    //% block="Suivre ligne avec deux capteurs ir|capteur ir gauche  %pingauche|capteur ir droit %pindroit|vitesse  %vit|temps en mS de déplacement  %ms"
     export function LineFollower(pinleft: DigitalPin, pinright: DigitalPin, speed: number, ms:number): void {
 
         let right = eurate.IrSensor(pinright);
